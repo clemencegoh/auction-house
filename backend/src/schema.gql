@@ -1,0 +1,20 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: Int!
+  firstName: String
+  lastName: String
+  email: String
+  money: Float
+}
+
+type Query {
+  getHello: String!
+  getUsers(
+    """exclude these ids"""
+    except: [Float!]
+  ): [User!]!
+  findAllAuctionItems: [String!]!
+}

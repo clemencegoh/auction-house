@@ -1,0 +1,8 @@
+type AuctionItem {
+  id: ID!
+  name: String
+  description: String
+  price: Number
+  currentBid: Number
+  highestBidder: User
+}
