@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { AuctionItemModule } from './auction-item/auction-item.module';
 import { AppController } from './app.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
@@ -14,6 +15,12 @@ import { AppController } from './app.controller';
       definitions: { 
         path: join(process.cwd(), 'src/graphql.ts'), 
       },
+    }),
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: ':memory:',
+      entities: ['dist/**/*.entity{.ts,.js}'],
+      synchronize: true,
     }),
     UserModule,
     AuctionItemModule,

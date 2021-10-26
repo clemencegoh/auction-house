@@ -10,11 +10,30 @@ type User {
   money: Float
 }
 
+type AuctionItem {
+  id: Int!
+  name: String!
+  description: String!
+  price: Float!
+  currentBid: Float
+  highestBidder: User
+}
+
 type Query {
   getHello: String!
   getUsers(
     """exclude these ids"""
     except: [Float!]
   ): [User!]!
-  findAllAuctionItems: [String!]!
+  auctionItems: [AuctionItem!]!
+}
+
+type Mutation {
+  createAuctionItem(createAuctionItemInput: CreateAuctionItemInput!): AuctionItem!
+}
+
+input CreateAuctionItemInput {
+  name: String!
+  description: String!
+  price: Float!
 }
