@@ -1,6 +1,7 @@
 import { Query, Resolver } from '@nestjs/graphql';
+import { AuctionItem } from './auction-item.entity';
 
-@Resolver()
+@Resolver(of => AuctionItem)
 export class AuctionItemResolver {
 
   constructor(){}
@@ -13,4 +14,6 @@ export class AuctionItemResolver {
     ];
     return sample;
   }
+
+  auction
 }
