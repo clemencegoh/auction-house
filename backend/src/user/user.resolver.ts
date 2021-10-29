@@ -6,25 +6,23 @@ import { UserService } from './user.service';
 /**
  * This takes the place of a Controller in a conventional REST API
  */
-@Resolver(of => User)
+@Resolver((of) => User)
 export class UserResolver {
-
-  constructor(
-    private userService: UserService
-  ) {}
+  constructor(private userService: UserService) {}
 
   @Query(() => String)
   getHello(): string {
     return 'Hello World!';
   }
 
-  @Query(returns => [User])
+  @Query((returns) => [User])
   async getUsers(
-    @Args('except', { 
-      type: () => [Number], 
-      nullable: true, 
-      description: 'exclude these ids', 
-    }) ids?: Number[],
+    @Args('except', {
+      type: () => [Number],
+      nullable: true,
+      description: 'exclude these ids',
+    })
+    ids?: Number[],
   ): Promise<User[]> {
     return this.userService.findAll(ids);
   }

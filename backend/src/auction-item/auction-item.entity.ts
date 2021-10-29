@@ -1,12 +1,18 @@
-import { Field, ObjectType, Int } from "@nestjs/graphql";
-import { User } from "src/user/user.entity";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Field, ObjectType, Int } from '@nestjs/graphql';
+import { User } from 'src/user/user.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 @ObjectType()
 export class AuctionItem {
   @PrimaryGeneratedColumn()
-  @Field(type => Int)
+  @Field((type) => Int)
   id: Number;
 
   @Column()
@@ -21,15 +27,16 @@ export class AuctionItem {
   @Field()
   price: Number;
 
-  @Column({nullable: true})
-  @Field({nullable: true})
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   currentBid?: Number;
 
-  @OneToOne(type => User) @JoinColumn()
-  @Field({nullable: true})
+  @OneToOne((type) => User)
+  @JoinColumn()
+  @Field({ nullable: true })
   highestBidder?: User;
 
-  public constructor(init?:Partial<AuctionItem>) {
+  public constructor(init?: Partial<AuctionItem>) {
     Object.assign(this, init);
   }
 }

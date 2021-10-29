@@ -6,6 +6,6 @@ import { AuctionItem } from './auction-item.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([AuctionItem])],
-  providers: [AuctionItemService, AuctionItemResolver]
+  providers: [AuctionItemService, AuctionItemResolver],
 })
 export class AuctionItemModule {}

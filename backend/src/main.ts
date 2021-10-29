@@ -10,7 +10,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter()
+    new FastifyAdapter(),
   );
 
   /**
@@ -22,7 +22,7 @@ async function bootstrap() {
     /**
      * disable CSP for now - CSP has issues with GraphQL playground
      * see https://docs.nestjs.com/security/helmet for more info
-     *  */ 
+     *  */
     contentSecurityPolicy: false,
   });
   await app.listen(8080);

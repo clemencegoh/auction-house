@@ -15,6 +15,10 @@ export class AuctionItemService {
     return this.auctionItemRepository.find();
   }
 
+  async findOne(id: number): Promise<AuctionItem> {
+    return this.auctionItemRepository.findOneOrFail(id);
+  }
+
   async createAuctionItem(createAuctionItemInput: CreateAuctionItemInput): Promise<AuctionItem> {
     const auctionItem = this.auctionItemRepository.create(createAuctionItemInput);
     return this.auctionItemRepository.save(auctionItem);
