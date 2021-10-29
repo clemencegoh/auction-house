@@ -26,6 +26,7 @@ type Query {
     except: [Float!]
   ): [User!]!
   auctionItems: [AuctionItem!]!
+  getAuctionItem(id: Float!): AuctionItem!
 }
 
 type Mutation {

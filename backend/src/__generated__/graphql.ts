@@ -34,6 +34,7 @@ export interface IQuery {
     getHello(): string | Promise<string>;
     getUsers(except?: Nullable<number[]>): User[] | Promise<User[]>;
     auctionItems(): AuctionItem[] | Promise<AuctionItem[]>;
+    getAuctionItem(id: number): AuctionItem | Promise<AuctionItem>;
 }
 
 export interface IMutation {
