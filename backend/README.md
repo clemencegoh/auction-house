@@ -47,6 +47,7 @@ Nest is [MIT licensed](LICENSE).
 # IMPORTANT NOTES
 
 - `ts-morph` not needed for code-first approach => must explictly install it if using schema-first.
+- List of validation annotations from class-validation for inputs can be found here https://github.com/typestack/class-validator#validation-decorators
 
 ## Architecture
 

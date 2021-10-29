@@ -10,10 +10,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [
     GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      autoSchemaFile: join(process.cwd(), 'src/__generated__/schema.gql'),
       typePaths: ['./**/*.graphql'],
       definitions: { 
-        path: join(process.cwd(), 'src/graphql.ts'), 
+        path: join(process.cwd(), 'src/__generated__/graphql.ts'), 
       },
     }),
     TypeOrmModule.forRoot({

@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -11,6 +12,12 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter()
   );
+
+  /**
+   * Add validations for all inputs
+   */
+  app.useGlobalPipes(new ValidationPipe());
+
   await app.register(fastifyHelmet, {
     /**
      * disable CSP for now - CSP has issues with GraphQL playground
