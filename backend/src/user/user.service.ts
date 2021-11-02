@@ -1,40 +1,52 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './user.entity';
+import { CreateUserInput } from './dto/create-user.input';
+import { UpdateUserInput } from './dto/update-user.input';
+import { User } from './entities/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
+    @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  mockDB: User[] = (() => {
-    const userArr: User[] = [];
-    for (let i = 0; i < 4; i++) {
-      userArr.push(
-        new User({
-          id: i,
-          firstName: `someboby ${i}`,
-          email: `someEmail${i}@gmail.com`,
-        }),
-      );
-    }
-    return userArr;
-  })();
-
-  async findAll(ids?: Number[]): Promise<User[]> {
-    if (!ids) return this.mockDB;
-    return this.mockDB.filter((item) => !ids.includes(item.id));
+  async create(createUserInput: CreateUserInput): Promise<User> {
+    // Hash user password since we don't really need to store that
+    const saltyPass = await this.createSaltyPassword(createUserInput.password);
+    const newUser = new User({
+      ...createUserInput,
+      password: saltyPass,
+    });
+    const createdUser = this.userRepository.create(newUser);
+    return this.userRepository.save(createdUser);
   }
 
-  async getRandomChoice(arr: any[]): Promise<any> {
-    const max_len = arr.length;
-    /**
-     * This does [0, len_arr) since we're doing floor here
-     */
-    const rand_pos = Math.floor(Math.random() * (max_len - 0) + 0);
-    return arr[rand_pos];
+  /**
+   * Creates a salt with bcrypt to hash. Should be compared using
+   * bcrypt.compare(password, hash) => this is without generating new salt
+   * @param password plaintext password is dangerous
+   * @returns salty password
+   */
+  async createSaltyPassword(password: string): Promise<string> {
+    const salt = await bcrypt.genSalt();
+    return bcrypt.hash(password, salt);
+  }
+
+  async findAll(): Promise<User[]> {
+    return this.userRepository.find();
+  }
+
+  async findOne(id: number): Promise<User> {
+    return this.userRepository.findOne(id);
+  }
+
+  update(id: number, updateUserInput: UpdateUserInput) {
+    return this.userRepository.update(id, updateUserInput);
+  }
+
+  remove(id: number) {
+    return `This action removes a #${id} user`;
   }
 }

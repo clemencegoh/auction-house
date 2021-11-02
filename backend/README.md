@@ -48,6 +48,9 @@ Nest is [MIT licensed](LICENSE).
 
 - `ts-morph` not needed for code-first approach => must explictly install it if using schema-first.
 - List of validation annotations from class-validation for inputs can be found here https://github.com/typestack/class-validator#validation-decorators
+
+## DEVELOPMENT NOTES
+
 - Wasted my time doing this manually but should have used `nest g resource <resource>` instead to generate boilerplate code.
 
 ## Architecture
@@ -60,3 +63,4 @@ Nest is [MIT licensed](LICENSE).
 - Websocket update for auction pages
 - Using Graphql for purpose of learning
 - Will also be using authentication/authorization
+  - This is provided by using passport instead of manually implementing
