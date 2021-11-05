@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -12,26 +11,18 @@ export class UserService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  async create(createUserInput: CreateUserInput): Promise<User> {
-    // Hash user password since we don't really need to store that
-    const saltyPass = await this.createSaltyPassword(createUserInput.password);
-    const newUser = new User({
-      ...createUserInput,
-      password: saltyPass,
-    });
-    const createdUser = this.userRepository.create(newUser);
-    return this.userRepository.save(createdUser);
-  }
-
   /**
    * Creates a salt with bcrypt to hash. Should be compared using
    * bcrypt.compare(password, hash) => this is without generating new salt
+   *
+   * Moved the genSalt hashing to user entity using @BeforeInsert instead
    * @param password plaintext password is dangerous
    * @returns salty password
    */
-  async createSaltyPassword(password: string): Promise<string> {
-    const salt = await bcrypt.genSalt();
-    return bcrypt.hash(password, salt);
+  async create(createUserInput: CreateUserInput): Promise<User> {
+    // Hash user password since we don't really need to store that
+    const createdUser = this.userRepository.create(createUserInput);
+    return this.userRepository.save(createdUser);
   }
 
   async findAll(): Promise<User[]> {
@@ -42,11 +33,19 @@ export class UserService {
     return this.userRepository.findOne(id);
   }
 
+  async findByUsername(username: string): Promise<User> {
+    return this.userRepository.findOne({ username: username });
+  }
+
+  async findByEmail(email: string): Promise<User> {
+    return this.userRepository.findOne({ email: email });
+  }
+
   update(id: number, updateUserInput: UpdateUserInput) {
     return this.userRepository.update(id, updateUserInput);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.userRepository.delete(id);
   }
 }

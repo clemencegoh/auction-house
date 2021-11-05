@@ -1,5 +1,6 @@
 import { Field, ObjectType, Int } from '@nestjs/graphql';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 @ObjectType()
@@ -9,12 +10,12 @@ export class User {
   id: number;
 
   @Column()
-  @Field()
-  username: string;
+  @Field({ nullable: true })
+  username?: string;
 
   @Column()
-  @Field()
-  password: string;
+  @Field({ nullable: true })
+  password?: string;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
@@ -27,6 +28,11 @@ export class User {
   @Column({ nullable: true })
   @Field({ nullable: true })
   money?: number;
+
+  @BeforeInsert() async hashPassword?(): Promise<void> {
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt);
+  }
 
   public constructor(init?: Partial<User>) {
     Object.assign(this, init);
